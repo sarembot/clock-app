@@ -8,6 +8,27 @@ const largeHandColor = document.getElementById('large-hand-color');
 const secondHandColor = document.getElementById('second-hand-color');
 const saveBtn = document.getElementById('save-btn');
 
+faceColor.value =
+  localStorage.getItem('face-color') !== null
+    ? localStorage.getItem('face-color')
+    : '#f4f4f4';
+borderColor.value =
+  localStorage.getItem('border-color') !== null
+    ? localStorage.getItem('border-color')
+    : '#800000';
+lineColor.value =
+  localStorage.getItem('line-color') !== null
+    ? localStorage.getItem('line-color')
+    : '#000000';
+largeHandColor.value =
+  localStorage.getItem('hour-color') !== null
+    ? localStorage.getItem('hour-color')
+    : '#800000';
+secondHandColor.value =
+  localStorage.getItem('seconds-color') !== null
+    ? localStorage.getItem('seconds-color')
+    : '#FF7F50';
+
 function clock() {
   const now = new Date();
   const ctx = canvas.getContext('2d');
@@ -24,28 +45,19 @@ function clock() {
   ctx.lineWidth = '5';
   ctx.lineCap = 'round';
 
-  faceColor.defaultValue = '#f4f4f4';
-  borderColor.defaultValue = '#800000';
-  lineColor.defaultValue = '#000000';
-  largeHandColor.defaultValue = '#800000';
-  secondHandColor.defaultValue = '#FF7F50';
-
-  // save image
-
   // draw clock face / border
   ctx.save();
 
-  const drawFace = (face = faceColor.value, border = borderColor.value) => {
-    ctx.beginPath();
-    ctx.lineWidth = 10;
-    ctx.fillStyle = face;
-    ctx.strokeStyle = border;
-    ctx.arc(0, 0, 142, 0, Math.PI * 2, true);
-    ctx.stroke();
-    ctx.fill();
-  };
+  ctx.beginPath();
+  ctx.lineWidth = 10;
+  ctx.fillStyle = faceColor.value;
+  ctx.strokeStyle = borderColor.value;
+  ctx.arc(0, 0, 142, 0, Math.PI * 2, true);
+  ctx.stroke();
+  ctx.fill();
 
-  drawFace();
+  localStorage.setItem('face-color', faceColor.value);
+  localStorage.setItem('border-color', borderColor.value);
 
   ctx.restore();
 
@@ -59,7 +71,6 @@ function clock() {
       ctx.moveTo(110, 0);
       ctx.lineTo(130, 0);
       ctx.stroke();
-
       ctx.rotate(Math.PI / 6);
     }
 
@@ -74,6 +85,8 @@ function clock() {
 
       ctx.rotate(Math.PI / 30);
     }
+
+    localStorage.setItem('line-color', color);
   };
 
   drawLines();
@@ -97,6 +110,8 @@ function clock() {
     ctx.moveTo(-20, 0);
     ctx.lineTo(80, 0);
     ctx.stroke();
+
+    localStorage.setItem('hour-color', color);
   };
 
   drawHourHand();
@@ -114,6 +129,8 @@ function clock() {
     ctx.moveTo(-28, 0);
     ctx.lineTo(112, 0);
     ctx.stroke();
+
+    localStorage.setItem('minute-color', color);
   };
 
   drawMinuteHand();
@@ -134,6 +151,8 @@ function clock() {
     ctx.stroke();
     ctx.arc(0, 0, 6, 0, Math.PI * 2, true);
     ctx.fill();
+
+    localStorage.setItem('seconds-color', color);
   };
 
   drawSecondsHand();
